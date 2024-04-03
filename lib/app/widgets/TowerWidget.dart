@@ -17,7 +17,8 @@ class TowerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = isSelected ? Colors.blue : Colors.black;
+    final borderColor = isSelected ? Colors.lightBlue : Colors.black;
+    final backgoud = isSelected ? Colors.grey[300] : null;
 
     return GestureDetector(
       onTap: () => onTap.call(torre),
@@ -25,28 +26,33 @@ class TowerWidget extends StatelessWidget {
         children: [
           Text(
             'Torre ${torre.index}',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: borderColor),
           ),
           SizedBox(height: 10),
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
             width: 100,
             decoration: BoxDecoration(
-              border: Border.all(color: borderColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
+                border: Border.all(
+                    color: borderColor,
+                    strokeAlign: BorderSide.strokeAlignOutside),
+                borderRadius: BorderRadius.circular(5),
+                color: backgoud),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: torre.disks
-                  .map((disk) => DiskWidget(
-                      disk: disk,
-                      towerWidth: 100,
-                      numberOfDisks: numberOfDisks,
-                      towerHeight: MediaQuery.of(context).size.height * 0.4))
-                  .toList().reversed.toList()
-                  // .reversed
-                  // .toList(),
-            ),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: torre.disks
+                    .map((disk) => DiskWidget(
+                        disk: disk,
+                        towerWidth: 100,
+                        numberOfDisks: numberOfDisks,
+                        towerHeight: MediaQuery.of(context).size.height * 0.4))
+                    .toList()
+                    .reversed
+                    .toList()
+                // .reversed
+                // .toList(),
+                ),
           ),
         ],
       ),

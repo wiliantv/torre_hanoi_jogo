@@ -2,16 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:torre_hanoi/app/widgets/TowerWidget.dart';
 import 'package:torre_hanoi/service/Tower.dart';
 import 'package:torre_hanoi/service/TowerController.dart';
 
-class HanoiTower20 extends StatefulWidget {
+class HanoiTower extends StatefulWidget {
   @override
   _HanoiTowerState createState() => _HanoiTowerState();
 }
 
-class _HanoiTowerState extends State<HanoiTower20> {
+class _HanoiTowerState extends State<HanoiTower> {
   late TowerController _towerController;
   GameStates gameStates = GameStates();
 
@@ -41,6 +42,11 @@ class _HanoiTowerState extends State<HanoiTower20> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Torres de Hanói'),
+        actions: [IconButton(onPressed: () {
+          context.goNamed('home');
+        }, icon: Icon(Icons.home)), IconButton(onPressed: () {
+          _towerController.reset();
+        }, icon: Icon(Icons.refresh))],
       ),
       body: KeyboardListener(
         focusNode: focusNode,

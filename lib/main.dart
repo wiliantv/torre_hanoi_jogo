@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:torre_hanoi/app/HanoiTower.dart';
+import 'package:torre_hanoi/app/play_game.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,12 +14,26 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Hanoi Towers',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HanoiTower20(),
+      routerConfig: GoRouter(routes: [
+        GoRoute(
+          name: "home",
+          path: '/',
+          builder: (context, state) => PlayGame(),
+          routes: [
+            GoRoute(
+              name: "game",
+              path: 'game',
+              builder: (context, state) => HanoiTower(),
+
+            )
+          ]
+        )
+      ]),
     );
   }
 }
