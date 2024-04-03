@@ -31,7 +31,7 @@ class TowerWidget extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Container(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.48,
             width: 100,
             decoration: BoxDecoration(
                 border: Border.all(
