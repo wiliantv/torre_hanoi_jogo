@@ -22,6 +22,16 @@ jobs:
         id: get_version
         run: echo "::set-output name=version::$(awk '/version:/{print $2}' pubspec.yaml)"
         
+      - name: Criando Certificado
+        run: echo "$SEGREDO" | base64 --decode > android/certificado.jks
+        env:
+          SEGREDO: ${{ secrets.KEYSTORE }}
+      - name: Criando key properties
+        run: echo "storePassword=$SENHA_KEYSTORE\nkeyPassword=$SENHA_ALIAS\nkeyAlias=$KEYSTORE_ALIAS\nstoreFile=../certificado.jks" >> android/key.properties
+        env:
+          SENHA_KEYSTORE: ${{ secrets.SENHA_KEYSTORE }}
+          SENHA_ALIAS: ${{ secrets.SENHA_ALIAS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
       - name: Build for Android
         run: |
           flutter pub get
