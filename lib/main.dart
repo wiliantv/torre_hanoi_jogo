@@ -9,10 +9,9 @@ import 'package:torre_hanoi/app/hanoi_tower.dart';
 import 'package:torre_hanoi/app/play_game.dart';
 import 'package:torre_hanoi/service/game_controller.dart';
 
-void main() {
-  SharedPreferences.getInstance().then((prefs) {
-    GameController instance = GameController(prefs);
-  });
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await GameController.initialize();
   runApp(MyApp());
 }
 

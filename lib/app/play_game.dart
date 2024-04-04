@@ -123,7 +123,7 @@ class _PlayGameState extends State<PlayGame> {
         duration: Duration(seconds: 2),
       ),
     );
-    GameController.instance.player = _nameController.text;
+    GameController.instance.player = _nameController.text ;
   }
 
   void _clearData() {

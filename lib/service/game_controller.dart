@@ -1,28 +1,33 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GameController{
-  static late GameController instance;
+  static GameController? _instance;
 
-  // String player;
-  late SharedPreferences _preferences;
-  late String _player;
 
-  GameController(SharedPreferences preferences){
-    _preferences = preferences;
-    instance = this;
+  static GameController get instance => _instance!;
+
+  static Future<GameController> initialize() async {
+    if(_instance == null) {
+      var preferences = await SharedPreferences.getInstance();
+      _instance = GameController._(preferences);
+    }
+    return _instance!;
   }
+
+
+  late SharedPreferences _preferences;
+
+  GameController._(SharedPreferences preferences){
+    _preferences = preferences;
+  }
+
+
+  set player(String value) {
+    preferences.setString("lastPlayer", value);
+  }
+
+  String get player =>  preferences.getString("lastPlayer") ?? "";
 
   SharedPreferences get preferences => _preferences;
-
-  String get player{
-    _player = _preferences.getString("player") ?? "Jogador";
-    return _player;
-  }
-
-  set player(String player){
-    _preferences.setString("player", player);
-    _player = player;
-  }
-
 
 }
