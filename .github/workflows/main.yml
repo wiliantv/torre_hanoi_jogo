@@ -23,7 +23,7 @@ jobs:
         run: echo "::set-output name=version::$(awk '/version:/{print $2}' pubspec.yaml)"
         
       - name: Criando Certificado
-        run: echo "$SEGREDO" | base64 --decode > android/certificado.jks
+        run: echo -e "$SEGREDO" | base64 --decode > android/certificado.jks
         env:
           SEGREDO: ${{ secrets.KEYSTORE }}
       - name: Criando key properties
