@@ -2,16 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:torre_hanoi/app/widgets/TowerWidget.dart';
-import 'package:torre_hanoi/service/Tower.dart';
-import 'package:torre_hanoi/service/TowerController.dart';
+import 'package:torre_hanoi/service/tower.dart';
+import 'package:torre_hanoi/service/tower_controller.dart';
 
-class HanoiTower20 extends StatefulWidget {
+class HanoiTower extends StatefulWidget {
+  String player;
+
+
+  HanoiTower(this.player);
+
   @override
   _HanoiTowerState createState() => _HanoiTowerState();
 }
 
-class _HanoiTowerState extends State<HanoiTower20> {
+class _HanoiTowerState extends State<HanoiTower> {
   late TowerController _towerController;
   GameStates gameStates = GameStates();
 
@@ -20,7 +26,7 @@ class _HanoiTowerState extends State<HanoiTower20> {
 
   @override
   void initState() {
-    _towerController = TowerController(numberOfDisks: _numDiscos);
+    _towerController = TowerController(numberOfDisks: _numDiscos, player: widget.player);
     super.initState();
     focusNode.requestFocus();
     _towerController.reset();
@@ -34,6 +40,7 @@ class _HanoiTowerState extends State<HanoiTower20> {
   @override
   void dispose() {
     super.dispose();
+    focusNode.dispose();
   }
 
   @override
@@ -41,6 +48,11 @@ class _HanoiTowerState extends State<HanoiTower20> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Torres de Hanói'),
+        actions: [IconButton(onPressed: () {
+          context.goNamed('home');
+        }, icon: Icon(Icons.home)), IconButton(onPressed: () {
+          _towerController.reset();
+        }, icon: Icon(Icons.refresh))],
       ),
       body: KeyboardListener(
         focusNode: focusNode,
@@ -53,23 +65,35 @@ class _HanoiTowerState extends State<HanoiTower20> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(5.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Movimentos: ${gameStates.movimentos}',
-                    style: TextStyle(fontSize: 15),
+                    'Jogador ${_towerController.player}' ,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
+                  Text(
+                    'Movimentos mínimos: ${pow(2, _towerController.numberOfDisks) - 1}  | Seus Movimentos: ${gameStates.movimentos}' ,
+                    style: TextStyle(fontSize: 12),
+                  ),
                   StreamBuilder<int>(
                     stream: _towerController.elapsedTimeStream,
                     builder: (context, snapshot) {
                       return Text(
                         'Tempo decorrido: ${_formatDuration(snapshot.data ?? 0)}',
-                        style: TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 12),
                       );
                     },
+                  ),
+                  SizedBox(height: 10),
+                  const Text(
+                    'Como Jogar:',
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
+                  const Text(
+                    'Mova os discos de uma torre para outra, sem colocar um disco maior sobre um menor. Mas atenção voce pode mover apenas um disco por vez. O objetivo é transferir todos os discos da Torre 1 para a Torre 3.',
+                    style: TextStyle(fontSize: 12),
                   ),
                   SizedBox(height: 10),
                   StreamBuilder<List<Tower>>(
@@ -99,15 +123,15 @@ class _HanoiTowerState extends State<HanoiTower20> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Número de Discos: '),
-                      SizedBox(width: 10),
+                      const Text('Número de Discos: ' ),
+                      const  SizedBox(width: 10),
                       DropdownButton<int>(
                         value: _numDiscos,
                         items: List.generate(13, (index) => index + 3)
                             .map((int value) {
                           return DropdownMenuItem<int>(
                             value: value,
-                            child: Text(value.toString()),
+                            child: Text('$value discos'),
                           );
                         }).toList(),
                         onChanged: (int? newValue) {
@@ -119,7 +143,7 @@ class _HanoiTowerState extends State<HanoiTower20> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -127,13 +151,9 @@ class _HanoiTowerState extends State<HanoiTower20> {
                         focusNode.requestFocus();
                       });
                     },
-                    child: Text('Resetar'),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Movimentos mínimos: ${pow(2, _towerController.numberOfDisks) - 1}',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                    child:const  Text('Resetar'),
+                  ),const SizedBox(height: 10),
+
                 ],
               ),
             ),

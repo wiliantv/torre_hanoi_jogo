@@ -1,4 +1,4 @@
-package com.example.torre_hanoi
+package com.wiliantv.torre_hanoi
 
 import io.flutter.embedding.android.FlutterActivity
 
