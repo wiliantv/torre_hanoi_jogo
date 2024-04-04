@@ -30,6 +30,7 @@ jobs:
         run: |
           echo -e "storePassword=${SENHA_KEYSTORE}\nkeyPassword=${SENHA_ALIAS}\nkeyAlias=${KEYSTORE_ALIAS}\nstoreFile=../certificado.jks" >> android/key.properties
           cat android/key.properties
+          echo "keyAlias=${KEYSTORE_ALIAS}"
         env:
           SENHA_KEYSTORE: ${{ secrets.SENHA_KEYSTORE }}
           SENHA_ALIAS: ${{ secrets.SENHA_ALIAS }}
