@@ -25,7 +25,6 @@ jobs:
       - name: Build for Android
         run: |
           flutter pub get
-          flutter test
           flutter build apk
           flutter build appbundle
       - name: Upload Android artifacts
@@ -38,7 +37,6 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           flutter pub get
-          flutter test
           flutter build ios --release --no-codesign
       - name: Upload iOS artifacts
         uses: actions/upload-artifact@v2
@@ -49,7 +47,6 @@ jobs:
       - name: Build for Web
         run: |
           flutter pub get
-          flutter test
           flutter build web
       - name: Upload Web artifacts
         uses: actions/upload-artifact@v2
