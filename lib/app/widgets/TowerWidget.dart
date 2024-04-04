@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:torre_hanoi/app/widgets/DiskWidget.dart';
-import 'package:torre_hanoi/service/Tower.dart';
+import 'package:torre_hanoi/service/tower.dart';
 
 class TowerWidget extends StatelessWidget {
   final Tower torre;

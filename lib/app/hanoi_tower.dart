@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:torre_hanoi/app/widgets/TowerWidget.dart';
-import 'package:torre_hanoi/service/Tower.dart';
-import 'package:torre_hanoi/service/TowerController.dart';
+import 'package:torre_hanoi/service/tower.dart';
+import 'package:torre_hanoi/service/tower_controller.dart';
 
 class HanoiTower extends StatefulWidget {
+  String player;
+
+
+  HanoiTower(this.player);
+
   @override
   _HanoiTowerState createState() => _HanoiTowerState();
 }
@@ -21,7 +26,7 @@ class _HanoiTowerState extends State<HanoiTower> {
 
   @override
   void initState() {
-    _towerController = TowerController(numberOfDisks: _numDiscos);
+    _towerController = TowerController(numberOfDisks: _numDiscos, player: widget.player);
     super.initState();
     focusNode.requestFocus();
     _towerController.reset();
@@ -35,6 +40,7 @@ class _HanoiTowerState extends State<HanoiTower> {
   @override
   void dispose() {
     super.dispose();
+    focusNode.dispose();
   }
 
   @override

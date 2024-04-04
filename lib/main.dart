@@ -4,10 +4,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:torre_hanoi/app/hanoi_tower.dart';
 import 'package:torre_hanoi/app/play_game.dart';
+import 'package:torre_hanoi/service/game_controller.dart';
 
 void main() {
+  SharedPreferences.getInstance().then((prefs) {
+    GameController instance = GameController(prefs);
+  });
   runApp(MyApp());
 }
 
@@ -29,7 +34,7 @@ class MyApp extends StatelessWidget {
             GoRoute(
               name: "game",
               path: 'game',
-              builder: (context, state) => HanoiTower(),
+              builder: (context, state) => HanoiTower(state.extra as String),
 
             )
           ]

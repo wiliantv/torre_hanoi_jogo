@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:torre_hanoi/service/Tower.dart';
+import 'package:torre_hanoi/service/tower.dart';
 
 class TowerController {
   String player;

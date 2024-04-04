@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:torre_hanoi/service/game_controller.dart';
 
 class PlayGame extends StatefulWidget {
   const PlayGame({Key? key}) : super(key: key);
@@ -15,7 +16,10 @@ class _PlayGameState extends State<PlayGame> {
   void initState() {
     super.initState();
     _nameController = TextEditingController();
-    _nameController.text = "Jogador";
+    setState(() {
+    _nameController.text = GameController.instance.player;
+
+    });
   }
 
   @override
@@ -32,40 +36,11 @@ class _PlayGameState extends State<PlayGame> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        hintText: "Jogador",
-                        border: OutlineInputBorder(),
-                        suffixIcon: ElevatedButton(
-                          onPressed: () {
-                            _updatePlayerName();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            textStyle: TextStyle(color: Colors.white), // Cor do texto do botão
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(5),
-                                bottomRight: Radius.circular(5),
-                              ),
-                            ),
-                          ),
-                          child: Text('OK'),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              playerName(),
               SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
-                  context.goNamed('game');
+                  context.goNamed('game', extra: _nameController.text);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -81,24 +56,63 @@ class _PlayGameState extends State<PlayGame> {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _clearData();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _clearData();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text('Limpar Dados', style: TextStyle(fontSize: 12, color: Colors.white)), // Cor do texto do botão
                   ),
-                ),
-                child: Text('Limpar Dados', style: TextStyle(fontSize: 16, color: Colors.white)), // Cor do texto do botão
+                  ElevatedButton(
+                    onPressed: () {
+                      _clearData();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text('Scores', style: TextStyle(fontSize: 12, color: Colors.white)), // Cor do texto do botão
+                  ),
+                ]
               ),
             ],
           ),
         )
       ),
     );
+  }
+
+  Row playerName() {
+    return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      hintText: "Jogador",
+                      border: OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        onPressed: _updatePlayerName,
+                        icon: Icon(Icons.check),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
   }
 
   void _updatePlayerName() {
@@ -109,11 +123,13 @@ class _PlayGameState extends State<PlayGame> {
         duration: Duration(seconds: 2),
       ),
     );
+    GameController.instance.player = _nameController.text;
   }
 
   void _clearData() {
+    GameController.instance.preferences.clear();
+    _nameController.clear();
     setState(() {
-      _nameController.clear();
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
