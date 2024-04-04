@@ -27,7 +27,7 @@ jobs:
         env:
           SEGREDO: ${{ secrets.KEYSTORE }}
       - name: Criando key properties
-        run: echo "storePassword=$SENHA_KEYSTORE\nkeyPassword=$SENHA_ALIAS\nkeyAlias=$KEYSTORE_ALIAS\nstoreFile=../certificado.jks" >> android/key.properties
+        run: echo -e "storePassword=$SENHA_KEYSTORE\nkeyPassword=$SENHA_ALIAS\nkeyAlias=$KEYSTORE_ALIAS\nstoreFile=../certificado.jks" >> android/key.properties
         env:
           SENHA_KEYSTORE: ${{ secrets.SENHA_KEYSTORE }}
           SENHA_ALIAS: ${{ secrets.SENHA_ALIAS }}
