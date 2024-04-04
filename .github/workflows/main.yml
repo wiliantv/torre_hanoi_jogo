@@ -20,8 +20,8 @@ jobs:
 
       - name: Get version from pubspec.yaml
         id: get_version
-        run: echo "::set-output name=version::$(grep -o 'version:.*' pubspec.yaml | sed 's/version: *//' | tr -d ' ')"
-
+        run: echo "::set-output name=version::$(awk '/version:/{print $2}' pubspec.yaml)"
+        
       - name: Build for Android
         run: |
           flutter pub get
