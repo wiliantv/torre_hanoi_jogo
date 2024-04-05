@@ -41,6 +41,7 @@ class _PlayGameState extends State<PlayGame> {
               SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
+                  _updatePlayerName();
                   context.goNamed('game');
                 },
                 style: ElevatedButton.styleFrom(
