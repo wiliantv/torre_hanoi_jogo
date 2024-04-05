@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             GoRoute(
               name: "game",
               path: 'game',
-              builder: (context, state) => HanoiTower(state.extra as String),
+              builder: (context, state) => HanoiTower(),
 
             )
           ]

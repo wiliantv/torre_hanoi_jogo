@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:torre_hanoi/app/widgets/TowerWidget.dart';
+import 'package:torre_hanoi/service/game_controller.dart';
 import 'package:torre_hanoi/service/tower.dart';
 import 'package:torre_hanoi/service/tower_controller.dart';
 
 class HanoiTower extends StatefulWidget {
-  String player;
+  String player = GameController.instance.player;
 
 
-  HanoiTower(this.player);
+  HanoiTower();
 
   @override
   _HanoiTowerState createState() => _HanoiTowerState();
@@ -127,7 +128,7 @@ class _HanoiTowerState extends State<HanoiTower> {
                       const  SizedBox(width: 10),
                       DropdownButton<int>(
                         value: _numDiscos,
-                        items: List.generate(13, (index) => index + 3)
+                        items: List.generate(GameController.maxDisks-1, (index) => index + GameController.minDisks)
                             .map((int value) {
                           return DropdownMenuItem<int>(
                             value: value,
