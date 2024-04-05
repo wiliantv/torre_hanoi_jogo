@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:torre_hanoi/service/game_controller.dart';
+import 'package:torre_hanoi/service/score.dart';
 import 'package:torre_hanoi/service/tower.dart';
 
 class TowerController {
@@ -50,6 +52,7 @@ class TowerController {
     _state._vitoria = towers.last.disks.length == numberOfDisks;
     if(_state._vitoria){
       _state._endTime = DateTime.now();
+      GameController.instance.checkScore(numberOfDisks ,_state._movimentos, getElapsedTime().inSeconds);
     }
     return _state._vitoria;
   }

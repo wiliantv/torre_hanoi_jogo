@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:torre_hanoi/app/widgets/scores.dart';
 import 'package:torre_hanoi/service/game_controller.dart';
 
 class PlayGame extends StatefulWidget {
@@ -40,7 +41,8 @@ class _PlayGameState extends State<PlayGame> {
               SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: () {
-                  context.goNamed('game', extra: _nameController.text);
+                  _updatePlayerName();
+                  context.goNamed('game');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -74,7 +76,10 @@ class _PlayGameState extends State<PlayGame> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _clearData();
+                      showDialog(
+                        context: context,
+                        builder: (context) => ScoresDialog(), // Exibir o diálogo de pontuações
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
