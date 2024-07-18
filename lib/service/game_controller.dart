@@ -8,7 +8,7 @@ class GameController{
   static final int maxDisks = 15;
   static final minDisks = 2;
 
-  late List<BestScore> _scores;
+  late List<BestScore> _scores = [];
   static GameController get instance => _instance!;
 
   static Future<GameController> initialize() async {
@@ -27,8 +27,13 @@ class GameController{
     _init();
   }
 
-  _init(){
-    _scores = _preferences.containsKey("bestScores") ? jsonDecode(_preferences.getString("bestScores")!).map((e) => scores.add(BestScore.fromMap(e))): [];
+  _init() async{
+    if (_preferences.containsKey("bestScores")) {
+      List<dynamic> decodedScores = jsonDecode(_preferences.getString("bestScores")!);
+      _scores = decodedScores.map((e) => BestScore.fromMap(e)).toList();
+    } else {
+      _scores = [];
+    }
   }
 
   void reset(){
@@ -71,7 +76,7 @@ class GameController{
       }
     }
 
-    _preferences.setString("bestScores", jsonEncode(scores.map((e) => e.toMap()).toList()));
+    _preferences.setString("bestScores", jsonEncode(_scores.map((e) => e.toMap()).toList()));
   }
 
 
