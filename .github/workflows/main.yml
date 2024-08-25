@@ -94,15 +94,3 @@ jobs:
         with:
           name: macos-artifacts
           path: build/macos
-        
-      - name: Create tag and release
-        if: success()
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            build/**
-          tag_name: v${{ steps.get_version.outputs.version }}
-          release_name: Release ${{ steps.get_version.outputs.version }}
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
